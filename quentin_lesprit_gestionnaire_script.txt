@@ -1,0 +1,48 @@
+#!/bin/bash  # Déclare que ce script doit être exécuté avec l'interpréteur Bash.
+
+# Définition du répertoire où seront stockés les scripts
+DIRECTORY="$(dirname "$0")/apprend"  
+# "$(dirname "$0")" récupère le répertoire du script en cours d'exécution.
+# "/apprend" est ajouté pour créer/utiliser un sous-dossier nommé "apprend".
+# Cela garantit que les scripts recherchés seront dans ce répertoire.
+
+mkdir -p "$DIRECTORY"  
+# Crée le répertoire "apprend" s'il n'existe pas déjà.
+# L'option `-p` empêche l'erreur si le dossier existe déjà.
+
+scripts=("$DIRECTORY"/*.sh)  
+# Stocke dans un tableau `scripts` la liste des fichiers .sh présents dans le répertoire.
+# Si aucun script n'est présent, le tableau contiendra une valeur "par défaut" pointant sur "*.sh".
+
+# Vérifie s'il existe au moins un script .sh dans le répertoire.
+if [ ! -e "${scripts[0]}" ]; then  
+    echo "Il n'y a pas de scripts dans '$DIRECTORY'. Vérifiez l'extension .sh."
+    exit 1  
+    # Quitte le script avec un code d'erreur 1 si aucun script .sh n'est trouvé.
+fi
+
+# Affiche la liste des scripts disponibles
+echo "Sélectionnez un script à exécuter :"
+for i in "${!scripts[@]}"; do  
+    # Boucle sur les indices du tableau `scripts` pour afficher chaque script avec un numéro.
+    echo "$((i+1))) $(basename "${scripts[$i]}")"
+    # Affiche un numéro (commençant à 1) suivi du nom du fichier sans son chemin complet.
+done
+
+# Demande à l'utilisateur d'entrer un numéro correspondant à un script
+read -p "Entrez le numéro du script : " choix  
+
+# Vérifie si l'entrée est un nombre valide et correspond à un indice existant
+if [[ "$choix" =~ ^[0-9]+$ ]] && (( choix >= 1 && choix <= ${#scripts[@]} )); then  
+    script="${scripts[$((choix-1))]}"  
+    # Récupère le chemin du script correspondant au choix de l'utilisateur.
+    
+    echo "Exécution de $script..."
+    bash "$script"  
+    # Exécute le script sélectionné avec Bash.
+else  
+    echo "Choix invalide."
+    exit 1  
+    # Quitte le script avec un code d'erreur 1 en cas d'entrée invalide.
+fi
+
