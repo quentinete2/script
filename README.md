@@ -1,5 +1,9 @@
 # Script - Gestionnaire de Scripts Bash
 
+## Attention
+Ceci est mon code perso sinon je suis avec guillaume
+
+
 ## Description
 Ce script permet de gérer et d'exécuter facilement des scripts Bash (.sh) stockés dans un répertoire dédié. Il détecte automatiquement les fichiers avec l'extension `.sh` et permet à l'utilisateur de sélectionner celui qu'il souhaite exécuter.
 
